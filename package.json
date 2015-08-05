@@ -1,0 +1,25 @@
+{
+  "name": "repechage",
+  "version": "1.0.0",
+  "description": "-------------",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albab/repechage.git"
+  },
+  "keywords": [
+    "Twitter",
+    "bot",
+    "retweet",
+    "contests"
+  ],
+  "author": "Al Money",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albab/repechage/issues"
+  },
+  "homepage": "https://github.com/albab/repechage#readme"
+}
