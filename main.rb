@@ -1,7 +1,7 @@
 require 'twitter'
 
 @follow_and_retweet = Hash.new(0)
-number_of_contests_to_enter = 100
+number_of_contests_to_enter = 500
 
 # streaming_client = Twitter::Streaming::Client.new do |config|
 #   config.consumer_key       = 'ZYztcGvW08hh513W354Ix2MVu'
@@ -18,7 +18,7 @@ rest_client = Twitter::REST::Client.new do |config|
 end
 
 enter_to_win = "RT follow enter win"
-rest_client.search(enter_to_win, result_type: "recent").take(200).collect do |object|
+rest_client.search(enter_to_win, result_type: "recent").take(number_of_contests_to_enter).collect do |object|
 # streaming_client.filter(track: enter_to_win, result_type: "recent") do |object|
 	count = 0
   if object.retweeted_status && object.is_a?(Twitter::Tweet)
