@@ -1,9 +1,16 @@
 require 'twitter'
 
 @follow_and_retweet = Hash.new(0)
-number_of_contests_to_enter = 1
+number_of_contests_to_enter = 200
 
-streaming_client = Twitter::Streaming::Client.new do |config|
+# streaming_client = Twitter::Streaming::Client.new do |config|
+#   config.consumer_key       = 'ZYztcGvW08hh513W354Ix2MVu'
+#   config.consumer_secret    = 'ZvV0sGsCjN8c0n2roZJPK7krjsJ6dpvdvOo8xHQIc1iXZz3iy6'
+#   config.access_token        = '3307168590-cYjuX5LQqnzOBp9eIfYkcCG3sMBTqp04UgOxWlo'
+#   config.access_token_secret = 'JtA75M9d5KFdlmELadPzLV33K3Ekg861DyAEw7fotdpCu'
+# end
+
+rest_client = Twitter::REST::Client.new do |config|
   config.consumer_key       = 'ZYztcGvW08hh513W354Ix2MVu'
   config.consumer_secret    = 'ZvV0sGsCjN8c0n2roZJPK7krjsJ6dpvdvOo8xHQIc1iXZz3iy6'
   config.access_token        = '3307168590-cYjuX5LQqnzOBp9eIfYkcCG3sMBTqp04UgOxWlo'
@@ -11,7 +18,8 @@ streaming_client = Twitter::Streaming::Client.new do |config|
 end
 
 enter_to_win = "RT follow enter win"
-streaming_client.filter(track: enter_to_win) do |object|
+rest_client.search(enter_to_win, result_type: "recent").take(200).collect do |object|
+# streaming_client.filter(track: enter_to_win, result_type: "recent") do |object|
 	count = 0
   if object.retweeted_status && object.is_a?(Twitter::Tweet)
   	if @follow_and_retweet.has_key? object.retweeted_status.user.id.to_i
@@ -34,13 +42,6 @@ streaming_client.filter(track: enter_to_win) do |object|
   break if count >= number_of_contests_to_enter
 end
 
-rest_client = Twitter::REST::Client.new do |config|
-  config.consumer_key       = 'ZYztcGvW08hh513W354Ix2MVu'
-  config.consumer_secret    = 'ZvV0sGsCjN8c0n2roZJPK7krjsJ6dpvdvOo8xHQIc1iXZz3iy6'
-  config.access_token        = '3307168590-cYjuX5LQqnzOBp9eIfYkcCG3sMBTqp04UgOxWlo'
-  config.access_token_secret = 'JtA75M9d5KFdlmELadPzLV33K3Ekg861DyAEw7fotdpCu'
-end
-
 puts "Time to follow the users we found and retweet their tweets TO WIN BIG...."
 puts "/////////////////////////////////////////////////////////////////////////"
 
@@ -48,6 +49,7 @@ puts "/////////////////////////////////////////////////////////////////////////"
 	begin
 		rest_client.follow user
 		puts "Followed user: #{user}"
+    sleep(1)
 		rest_client.retweet tweet
 		puts "Retweeted tweet: #{tweet}"
 	rescue
