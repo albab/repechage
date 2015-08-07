@@ -1,7 +1,7 @@
 require 'twitter'
 
 @follow_and_retweet = Hash.new(0)
-number_of_contests_to_enter = 200
+number_of_contests_to_enter = 100
 
 # streaming_client = Twitter::Streaming::Client.new do |config|
 #   config.consumer_key       = 'ZYztcGvW08hh513W354Ix2MVu'
@@ -52,8 +52,8 @@ puts "/////////////////////////////////////////////////////////////////////////"
     sleep(1)
 		rest_client.retweet tweet
 		puts "Retweeted tweet: #{tweet}"
-	rescue
-		puts "uh oh, we've most likely followed this user already."
+	rescue => error
+    puts error
 		next
 	end
 end
